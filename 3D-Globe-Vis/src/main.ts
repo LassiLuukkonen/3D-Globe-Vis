@@ -1,6 +1,7 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import earth from '../earth.jpg'
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000)
@@ -10,12 +11,16 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setPixelRatio( window.devicePixelRatio )
 renderer.setSize( window.innerWidth, window.innerHeight )
-camera.position.z = 5
+renderer.setClearColor(0x000814)
+camera.position.z = 3
 
-const boxGeometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshStandardMaterial({color: '#325aa8'})
+const material = new THREE.MeshBasicMaterial({
+  map: new THREE.TextureLoader().load(earth)})
 
-const mesh = new THREE.Mesh(boxGeometry, material)
+const sphere = new THREE.SphereBufferGeometry(1, 30, 30)
+
+
+const mesh = new THREE.Mesh(sphere, material)
 scene.add(mesh)
 
 const pointLight = new THREE.PointLight(0xffffff)
@@ -29,8 +34,10 @@ const controls = new OrbitControls(camera, renderer.domElement)
 
 function animate() {
   requestAnimationFrame(animate)
-  // mesh.rotation.y += 0.01
-  // mesh.rotation.x += 0.005
+  mesh.rotation.y += 0.001
+  mesh.rotation.x += 0.001
+  camera.fov *= 0.998;
+  camera.updateProjectionMatrix();
 
   controls.update()
   renderer.render(scene, camera)
