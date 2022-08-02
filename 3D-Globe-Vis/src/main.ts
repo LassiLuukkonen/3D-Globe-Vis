@@ -1,23 +1,35 @@
 import './style.css'
-import typescriptLogo from './typescript.svg'
-import { setupCounter } from './counter'
+import * as THREE from 'three'
+import { RGBADepthPacking } from 'three'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const scene = new THREE.Scene()
+const camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000)
+const renderer = new THREE.WebGLRenderer({
+  canvas: document.querySelector('#bg'),
+})
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+renderer.setPixelRatio( window.devicePixelRatio )
+renderer.setSize( window.innerWidth, window.innerHeight )
+camera.position.z = 5
+
+const boxGeometry = new THREE.BoxGeometry(1, 1, 1)
+const material = new THREE.MeshStandardMaterial({color: '#325aa8'})
+
+const mesh = new THREE.Mesh(boxGeometry, material)
+scene.add(mesh)
+
+const pointLight = new THREE.PointLight(0xffffff)
+pointLight.position.set(5, 5, 5)
+scene.add(pointLight)
+
+const ambientLight = new THREE.AmbientLight(0x858585)
+scene.add(ambientLight)
+
+function animate() {
+  requestAnimationFrame(animate)
+  renderer.render(scene, camera)
+  mesh.rotation.y += 0.01
+  mesh.rotation.x += 0.005
+}
+
+animate()
