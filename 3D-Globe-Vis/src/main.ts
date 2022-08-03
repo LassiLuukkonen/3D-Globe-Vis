@@ -13,10 +13,10 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio( window.devicePixelRatio )
 renderer.setSize( window.innerWidth, window.innerHeight )
 renderer.setClearColor(0x000814)
-camera.position.x = 4
-camera.position.y = 0
+camera.position.x = -2.5
+camera.position.y = 1
 camera.position.z = 0
-camera.fov *= 0.8
+camera.fov *= 0.7
 
 const map = new THREE.TextureLoader().load(earth)
 map.wrapS = THREE.RepeatWrapping
@@ -135,6 +135,8 @@ const ambientLight = new THREE.AmbientLight(0x858585)
 scene.add(ambientLight)
 
 const controls = new OrbitControls(camera, renderer.domElement)
+controls.autoRotate = true
+controls.autoRotateSpeed = -1
 
 function animate() {
   requestAnimationFrame(animate)
@@ -143,7 +145,7 @@ function animate() {
   // camera.fov *= 0.998;
   camera.updateProjectionMatrix();
 
-  controls.update()
+  controls.update();
   renderer.render(scene, camera)
 }
 
