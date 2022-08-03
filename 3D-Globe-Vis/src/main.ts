@@ -122,11 +122,6 @@ function drawAxes() {
 }
 
 
-
-const text = new THREE.TextGeometry( "HELLO" );
-
-
-
 const pointLight = new THREE.PointLight(0xffffff)
 pointLight.position.set(5, 5, 5)
 scene.add(pointLight)
